@@ -24,17 +24,9 @@ public abstract class AuditingFields {
     @Column(nullable = false, updatable = false)
     protected LocalDateTime createdAt;
 
-    @CreatedBy
-    @Column(nullable = false, updatable = false, length = 50)
-    protected String createdBy;
-
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @LastModifiedDate
     @Column(nullable = false)
     protected LocalDateTime modifiedAt;
-
-    @LastModifiedBy
-    @Column(nullable = false, length = 50)
-    protected String modifiedBy;
 
 }
