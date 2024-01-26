@@ -5,7 +5,7 @@ logging:
   level:
     com.sideproject.preorderservice: debug
     org.springframework.web.servlet: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.hibernate.type.descriptor.sql: trace
 
 spring:
 #  datasource:
@@ -22,3 +22,7 @@ spring:
       hibernate.default_batch_fetch_size: 100
   h2.console.enabled: false
   sql.init.mode: always
+
+jwt:
+  secret-key: {JWT_SECRET_KEY}
+  token.expired-time-ms: {JWT_TOKEN_EXPIRED_MS}
