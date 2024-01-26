@@ -8,17 +8,20 @@ import lombok.ToString;
 import java.util.Objects;
 
 @Getter
-@ToString(callSuper = true )
+@ToString(callSuper = true)
 @Table(indexes = {
 
 })
 
 @Entity
-public class UserAccount extends AuditingFields{
+public class UserAccount extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
+    @Column(nullable = false, length = 50)
+    private String email;
     @Setter
     @Column(nullable = false, length = 50)
     private String userName;
@@ -26,33 +29,30 @@ public class UserAccount extends AuditingFields{
     @Column(nullable = false)
     private String userPassword;
     @Setter
-    @Column(nullable = false, length = 50)
-    private String email;
-    @Setter
     @Column
     private Boolean emailVerified;
     @Setter
     @Column(nullable = false)
     private String memo;
-    @Lob
-    @Column(nullable = false)
-    private byte[] profilePicture;
+    @Setter
+    @Column(nullable = false, length = 500)
+    private String profilePicture;
 
     protected UserAccount() {
 
     }
 
-    private UserAccount(String userName, String userPassword, String email, Boolean emailVerified, String memo, byte[] profilePicture) {
+    private UserAccount(String email, String userName, String userPassword, Boolean emailVerified, String memo, String profilePicture) {
+        this.email = email;
         this.userName = userName;
         this.userPassword = userPassword;
-        this.email = email;
         this.emailVerified = emailVerified;
         this.memo = memo;
         this.profilePicture = profilePicture;
     }
 
-    public static UserAccount of(String userName, String userPassword, String email, Boolean emailVerified, String memo, byte[] profilePicture) {
-        return new UserAccount(userName, userPassword, email, emailVerified, memo, profilePicture);
+    public static UserAccount of(String email, String userName, String userPassword, Boolean emailVerified, String memo, String profilePicture) {
+        return new UserAccount(email, userName, userPassword, emailVerified, memo, profilePicture);
     }
 
     @Override
