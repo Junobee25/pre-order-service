@@ -17,7 +17,8 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         "/api/join",
-                        "/api/login"
+                        "/api/login",
+                        "/join/confirm-email"
                 ).permitAll()
         );
         return http.build();
