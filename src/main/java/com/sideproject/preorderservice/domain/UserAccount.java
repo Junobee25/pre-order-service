@@ -55,6 +55,10 @@ public class UserAccount extends AuditingFields {
         return new UserAccount(email, userName, userPassword, emailVerified, memo, profilePicture);
     }
 
+    public void emailVerifiedSuccess() {
+        this.emailVerified = true;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
