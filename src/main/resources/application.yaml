@@ -13,6 +13,21 @@ spring:
 #    username: {LOCAL_DB_USERNAME}
 #    password: {LOCAL_DB_PASSWORD}
 ##    driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: ${EMAIL_HOST_SERVER}
+    port: ${EMAIL_TRANSPORT}
+    username: ${EMAIL_USER_ACCOUNT}
+    password: ${APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
   jpa:
     defer-datasource-initialization: true
     hibernate.ddl-auto: create
@@ -24,5 +39,5 @@ spring:
   sql.init.mode: always
 
 jwt:
-  secret-key: {JWT_SECRET_KEY}
-  token.expired-time-ms: {JWT_TOKEN_EXPIRED_MS}
+  secret-key: ${JWT_SECRET_KEY}
+  token.expired-time-ms: ${JWT_TOKEN_EXPIRED_MS}
