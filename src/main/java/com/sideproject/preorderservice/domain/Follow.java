@@ -2,9 +2,12 @@ package com.sideproject.preorderservice.domain;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@NoArgsConstructor
+
+@Setter
 @Entity
+@NoArgsConstructor
 public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +21,10 @@ public class Follow {
     @JoinColumn(name = "to_user_id", nullable = false)
     private UserAccount toUser;
 
-    private Follow(UserAccount fromUser, UserAccount toUser) {
-        this.fromUser = fromUser;
-        this.toUser = toUser;
+    public static Follow of(UserAccount fromUser, UserAccount toUser){
+        Follow follow = new Follow();
+        follow.setFromUser(fromUser);
+        follow.setToUser(toUser);
+        return follow;
     }
 }

@@ -34,6 +34,12 @@ public class UserAccountService {
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
 
+    public UserAccount loadUserByEmail(String email) throws PreOrderApplicationException {
+        return userAccountRepository.findByEmail(email).orElseThrow(
+                () -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("email is %s", email))
+        );
+    }
+
     public UserAccountDto join(String email, String userName, String userPassword, String memo, MultipartFile profilePicture) {
         //TODO: 생성자에 값을 즉시 주입시켜 생성할 수 있는 Build 패턴이 유용한 것 같다 회원가입은 dto를 통해 값을 전달 했는데 Build 패턴으로 리팩토링해보자
         EmailAuth emailAuth = emailAuthRepository.save(
