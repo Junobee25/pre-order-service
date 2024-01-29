@@ -31,7 +31,7 @@ public class ArticleService {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.ARTICLE_NOT_FOUND, String.format("articleId is %d", articleId)));
         if (!Objects.equals(article.getUserAccount().getEmail(), email)) {
-            throw new PreOrderApplicationException(ErrorCode.INVALID_PASSWORD, String.format("user %s has no permission with article %d", email, articleId));
+            throw new PreOrderApplicationException(ErrorCode.INVALID_PERMISSION, String.format("user %s has no permission with article %d", email, articleId));
         }
         article.setTitle(title);
         article.setContent(content);
@@ -41,11 +41,10 @@ public class ArticleService {
     @Transactional
     public void delete(String email, Long articleId) {
         Article article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.ARTICLE_NOT_FOUND, String.format("articleId is %s", articleId)));
+                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.ARTICLE_NOT_FOUND, String.format("articleId is %d", articleId)));
         if (!Objects.equals(article.getUserAccount().getEmail(), email)) {
             throw new PreOrderApplicationException(ErrorCode.INVALID_PERMISSION, String.format("user %s has no permission with article %d", email, articleId));
         }
         articleRepository.delete(article);
     }
-
 }
