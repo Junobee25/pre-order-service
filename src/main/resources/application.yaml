@@ -5,6 +5,7 @@ logging:
   level:
     com.sideproject.preorderservice: debug
     org.springframework.web.servlet: debug
+    org.springframework.transaction.interceptor: trace
     org.hibernate.type.descriptor.sql: trace
 
 spring:
