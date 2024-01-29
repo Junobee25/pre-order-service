@@ -13,6 +13,7 @@ public enum ErrorCode {
     EMAIL_AUTH_TOKEN_NOT_FOUNT(HttpStatus.NOT_FOUND, "Invalid email request"),
     USER_NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "User not authenticated"),
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "Article not founded"),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not founded"),
     INVALID_PERMISSION(HttpStatus.UNAUTHORIZED, "User has invalid permission");
 
     private final HttpStatus status;
