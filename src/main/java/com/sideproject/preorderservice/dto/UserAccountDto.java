@@ -16,11 +16,16 @@ public record UserAccountDto(
         LocalDateTime modifiedAt
 ) {
 
+    public static UserAccountDto of(Long id, String email) {
+        return new UserAccountDto(id, email, null, null, null, null, null, null, null);
+    }
+
     public static UserAccountDto from(UserAccount entity) {
+        System.out.println("Dto");
         return new UserAccountDto(
                 entity.getId(),
                 entity.getEmail(),
-                entity.getUserName(),
+                entity.getUsername(),
                 entity.getUserPassword(),
                 entity.getEmailVerified(),
                 entity.getMemo(),
