@@ -1,6 +1,7 @@
 package com.sideproject.preorderservice.dto.response;
 
 import com.sideproject.preorderservice.domain.Article;
+import com.sideproject.preorderservice.dto.ArticleDto;
 
 import java.time.LocalDateTime;
 
@@ -13,14 +14,14 @@ public record ArticleResponse(
         LocalDateTime modifiedAt
 ) {
 
-    public static ArticleResponse fromArticle(Article article) {
+    public static ArticleResponse fromArticle(ArticleDto dto) {
         return new ArticleResponse(
-                article.getId(),
-                article.getTitle(),
-                article.getContent(),
-                UserAccountResponse.fromUser(article.getUserAccount()),
-                article.getCreatedAt(),
-                article.getModifiedAt()
+                dto.id(),
+                dto.title(),
+                dto.content(),
+                UserAccountResponse.fromUser(dto.userAccountDto()),
+                dto.userAccountDto().createdAt(),
+                dto.userAccountDto().modifiedAt()
         );
     }
 }
