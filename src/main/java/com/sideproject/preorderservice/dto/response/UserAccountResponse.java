@@ -1,15 +1,15 @@
 package com.sideproject.preorderservice.dto.response;
 
-import com.sideproject.preorderservice.domain.UserAccount;
+import com.sideproject.preorderservice.dto.UserAccountDto;
 
 public record UserAccountResponse(
         Long id,
         String email) {
 
-    public static UserAccountResponse fromUser(UserAccount userAccount) {
+    public static UserAccountResponse fromUser(UserAccountDto dto) {
         return new UserAccountResponse(
-                userAccount.getId(),
-                userAccount.getEmail()
+                dto.id(),
+                dto.email()
         );
     }
 }
