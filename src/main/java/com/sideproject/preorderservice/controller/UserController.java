@@ -3,12 +3,12 @@ package com.sideproject.preorderservice.controller;
 import com.sideproject.preorderservice.dto.request.EmailAuthRequest;
 import com.sideproject.preorderservice.dto.request.UserJoinRequest;
 import com.sideproject.preorderservice.dto.request.UserLoginRequest;
-import com.sideproject.preorderservice.dto.response.EmailAuthResponse;
-import com.sideproject.preorderservice.dto.response.Response;
-import com.sideproject.preorderservice.dto.response.UserJoinResponse;
-import com.sideproject.preorderservice.dto.response.UserLoginResponse;
+import com.sideproject.preorderservice.dto.response.*;
 import com.sideproject.preorderservice.service.UserAccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +40,11 @@ public class UserController {
     public Response<UserLoginResponse> login(UserLoginRequest request) {
         String token = userAccountService.login(request.email(), request.password());
         return Response.success(new UserLoginResponse(token));
+    }
+
+    @GetMapping("/api/alarm")
+    public Response<Page<AlarmResponse>> alarm(Pageable pageable, Authentication authentication) {
+        return Response.success(userAccountService.alarmList(authentication.getName(), pageable).map(AlarmResponse::fromAlarm));
     }
 
 }
