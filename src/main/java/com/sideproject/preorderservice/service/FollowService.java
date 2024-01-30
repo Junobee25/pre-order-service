@@ -23,8 +23,7 @@ public class FollowService {
         UserAccount toUserAccount = userAccountRepository.findByEmail(toUser).orElseThrow(() ->
                 new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", toUser)));
 
-        // follow save
-        Follow saved = followRepository.save(Follow.of(fromUserAccount, toUserAccount));
+       followRepository.save(Follow.of(fromUserAccount, toUserAccount));
     }
 
 }
