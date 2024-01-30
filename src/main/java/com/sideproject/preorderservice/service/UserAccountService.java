@@ -2,15 +2,19 @@ package com.sideproject.preorderservice.service;
 
 import com.sideproject.preorderservice.domain.EmailAuth;
 import com.sideproject.preorderservice.domain.UserAccount;
+import com.sideproject.preorderservice.dto.AlarmDto;
 import com.sideproject.preorderservice.dto.UserAccountDto;
 import com.sideproject.preorderservice.exception.ErrorCode;
 import com.sideproject.preorderservice.exception.PreOrderApplicationException;
+import com.sideproject.preorderservice.repository.AlarmEntityRepository;
 import com.sideproject.preorderservice.repository.EmailAuthRepository;
 import com.sideproject.preorderservice.repository.UserAccountRepository;
 import com.sideproject.preorderservice.util.JwtTokenUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +29,7 @@ import java.util.UUID;
 public class UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final EmailAuthRepository emailAuthRepository;
+    private final AlarmEntityRepository alarmEntityRepository;
     private final BCryptPasswordEncoder encoder;
     private final EmailService emailService;
 
@@ -70,7 +75,8 @@ public class UserAccountService {
     }
 
     public String login(String email, String password) {
-        UserAccount userAccount = userAccountRepository.findByEmail(email).orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("% not founded", email)));
+        UserAccount userAccount = userAccountRepository.findByEmail(email)
+                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("% not founded", email)));
 
         if (!encoder.matches(password, userAccount.getUserPassword())) {
             throw new PreOrderApplicationException(ErrorCode.INVALID_PASSWORD);
@@ -93,5 +99,13 @@ public class UserAccountService {
         emailAuth.userToken();
         //TODO: Setter로 대체 됨 뭘 사용할지에 대한 기준은 잘 모르겠음
         userAccount.emailVerifiedSuccess();
+    }
+
+    public Page<AlarmDto> alarmList(String email, Pageable pageable) {
+        UserAccount userAccount = userAccountRepository.findByEmail(email)
+                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("% not founded", email)));
+
+        return alarmEntityRepository.findAllByUserAccount(userAccount, pageable)
+                .map(AlarmDto::fromEntity);
     }
 }

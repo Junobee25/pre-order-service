@@ -33,7 +33,8 @@ public class AuthenticationConfiguration {
                                 "/join/confirm-email/**",
                                 "/api/follow",
                                 "/api/posts/**",
-                                "/api/likes/**"
+                                "/api/likes/**",
+                                "/api/alarm/**"
                         ).permitAll()
                 )
                 .addFilterBefore(new JwtTokenFilter(userAccountService, secretKey), UsernamePasswordAuthenticationFilter.class);

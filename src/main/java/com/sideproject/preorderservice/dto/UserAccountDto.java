@@ -21,7 +21,6 @@ public record UserAccountDto(
     }
 
     public static UserAccountDto from(UserAccount entity) {
-        System.out.println("Dto");
         return new UserAccountDto(
                 entity.getId(),
                 entity.getEmail(),

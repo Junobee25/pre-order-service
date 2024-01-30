@@ -1,10 +1,15 @@
 package com.sideproject.preorderservice.service;
 
+import com.sideproject.preorderservice.configuration.AlarmType;
+import com.sideproject.preorderservice.domain.AlarmArgs;
 import com.sideproject.preorderservice.domain.Article;
 import com.sideproject.preorderservice.domain.ArticleComment;
 import com.sideproject.preorderservice.domain.UserAccount;
+import com.sideproject.preorderservice.domain.entity.AlarmEntity;
+import com.sideproject.preorderservice.dto.ArticleCommentDto;
 import com.sideproject.preorderservice.exception.ErrorCode;
 import com.sideproject.preorderservice.exception.PreOrderApplicationException;
+import com.sideproject.preorderservice.repository.AlarmEntityRepository;
 import com.sideproject.preorderservice.repository.ArticleCommentRepository;
 import com.sideproject.preorderservice.repository.ArticleRepository;
 import com.sideproject.preorderservice.repository.UserAccountRepository;
@@ -20,6 +25,7 @@ public class ArticleCommentService {
     private final UserAccountRepository userAccountRepository;
     private final ArticleRepository articleRepository;
     private final ArticleCommentRepository articleCommentRepository;
+    private final AlarmEntityRepository alarmEntityRepository;
 
     @Transactional
     public void create(String email, Long articleId, String content) {
@@ -29,10 +35,12 @@ public class ArticleCommentService {
                 .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("user is %s", email)));
 
         articleCommentRepository.save(ArticleComment.of(userAccount, article, content));
+
+        alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), AlarmType.NEW_COMMENT_ON_POST, new AlarmArgs(userAccount.getId(), article.getId())));
     }
 
     @Transactional
-    public ArticleComment modify(String email, Long commentId, String content) {
+    public ArticleCommentDto modify(String email, Long commentId, String content) {
         ArticleComment articleComment = articleCommentRepository.findById(commentId)
                 .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.COMMENT_NOT_FOUND, String.format("commentId is %d", commentId)));
         if (!Objects.equals(articleComment.getUserAccount().getEmail(), email)) {
@@ -40,7 +48,7 @@ public class ArticleCommentService {
         }
         articleComment.setContent(content);
 
-        return articleCommentRepository.save(articleComment);
+        return ArticleCommentDto.from(articleCommentRepository.save(articleComment));
     }
 
     @Transactional
