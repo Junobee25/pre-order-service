@@ -14,7 +14,8 @@ public enum ErrorCode {
     USER_NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "User not authenticated"),
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "Article not founded"),
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not founded"),
-    INVALID_PERMISSION(HttpStatus.UNAUTHORIZED, "User has invalid permission");
+    INVALID_PERMISSION(HttpStatus.UNAUTHORIZED, "User has invalid permission"),
+    INVALID_LIKE_REQUEST(HttpStatus.NOT_FOUND, "Invalid like request");
 
     private final HttpStatus status;
     private final String message;
