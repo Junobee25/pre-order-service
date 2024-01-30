@@ -14,7 +14,7 @@ public class Likes {
     private Long id;
 
     @ManyToOne
-    @JoinTable(name = "userNumber")
+    @JoinColumn(name = "user_id")
     private UserAccount userAccount;
 
     @Enumerated(EnumType.STRING)
@@ -24,7 +24,7 @@ public class Likes {
 
     private Boolean deleted;
 
-    protected Likes() {
+    public Likes() {
 
     }
 
