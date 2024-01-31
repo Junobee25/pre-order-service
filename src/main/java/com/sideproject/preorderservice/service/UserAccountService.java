@@ -1,22 +1,26 @@
 package com.sideproject.preorderservice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sideproject.preorderservice.configuration.TokenType;
 import com.sideproject.preorderservice.domain.EmailAuth;
 import com.sideproject.preorderservice.domain.Follow;
+import com.sideproject.preorderservice.domain.Token;
 import com.sideproject.preorderservice.domain.UserAccount;
 import com.sideproject.preorderservice.dto.AlarmDto;
 import com.sideproject.preorderservice.dto.UserAccountDto;
+import com.sideproject.preorderservice.dto.response.UserLoginResponse;
 import com.sideproject.preorderservice.exception.ErrorCode;
 import com.sideproject.preorderservice.exception.PreOrderApplicationException;
-import com.sideproject.preorderservice.repository.AlarmEntityRepository;
-import com.sideproject.preorderservice.repository.EmailAuthRepository;
-import com.sideproject.preorderservice.repository.FollowRepository;
-import com.sideproject.preorderservice.repository.UserAccountRepository;
+import com.sideproject.preorderservice.repository.*;
 import com.sideproject.preorderservice.util.JwtTokenUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +30,6 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,7 @@ public class UserAccountService {
     private final EmailAuthRepository emailAuthRepository;
     private final AlarmEntityRepository alarmEntityRepository;
     private final FollowRepository followRepository;
+    private final TokenRepository tokenRepository;
     private final BCryptPasswordEncoder encoder;
     private final EmailService emailService;
 
@@ -43,6 +47,9 @@ public class UserAccountService {
 
     @Value("${jwt.token.expired-time-ms}")
     private Long expiredTimeMs;
+
+    @Value("${jwt.refreshToken.expired-time-ms}")
+    private Long expiredRefreshTokenTimeMs;
 
     public UserAccount loadUserByEmail(String email) throws PreOrderApplicationException {
         return userAccountRepository.findByEmail(email).orElseThrow(
@@ -79,7 +86,7 @@ public class UserAccountService {
         return UserAccountDto.from(savedUser);
     }
 
-    public String login(String email, String password) {
+    public UserLoginResponse login(String email, String password) {
         UserAccount userAccount = userAccountRepository.findByEmail(email)
                 .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("% not founded", email)));
 
@@ -90,10 +97,55 @@ public class UserAccountService {
             throw new PreOrderApplicationException(ErrorCode.USER_NOT_AUTHENTICATED);
         }
 
-        String token = JwtTokenUtils.generateToken(email, secretKey, expiredTimeMs);
-
-        return token;
+        String accessToken = JwtTokenUtils.generateToken(email, secretKey, expiredTimeMs);
+        String refreshToken = JwtTokenUtils.generateRefreshToken(email, secretKey, expiredRefreshTokenTimeMs);
+        revokeAllUserTokens(email);
+        saveToken(email, accessToken);
+        return new UserLoginResponse(accessToken, refreshToken);
     }
+
+
+    private void revokeAllUserTokens(String email) {
+        List<Token> validTokens = tokenRepository.findAllValidTokenByEmail(email);
+        if (!validTokens.isEmpty()) {
+            validTokens.forEach(t -> {
+                t.setExpired(true);
+                t.setRevoked(true);
+            });
+        }
+    }
+
+    private void saveToken(String email, String accessToken) {
+        Token token = Token.builder()
+                .accessToken(accessToken)
+                .tokenType(TokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .email(email)
+                .build();
+        tokenRepository.save(token);
+    }
+
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String refreshToken;
+        final String email;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return;
+        }
+        refreshToken = authHeader.substring(7);
+        email = JwtTokenUtils.extractEmail(refreshToken, secretKey);
+        if (email != null) {
+            UserAccount userAccount = userAccountRepository.findByEmail(email)
+                    .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("email is %s", email)));
+            if (JwtTokenUtils.isTokenValid(refreshToken, secretKey, userAccount)) {
+                String accessToken = JwtTokenUtils.generateToken(userAccount.getEmail(), secretKey, expiredTimeMs);
+                UserLoginResponse userLoginResponse = new UserLoginResponse(accessToken, refreshToken);
+                new ObjectMapper().writeValue(response.getOutputStream(), userLoginResponse);
+            }
+        }
+    }
+
 
     @Transactional // JPA에서 영속성 컨텍스트 통해 객체 변경 추적하고 트랜잭션 커밋 시점에 DB에 반영해줌.
     public void confirmEmail(String email, String authToken) {
