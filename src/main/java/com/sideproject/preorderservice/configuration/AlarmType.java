@@ -12,5 +12,5 @@ public enum AlarmType {
     NEW_LIKE_ON_COMMENT("new like"),
     NEW_FOLLOW_TO_USER("new follow");
 
-    private final String alarmTest;
+    private final String alarmType;
 }

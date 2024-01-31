@@ -1,6 +1,7 @@
 package com.sideproject.preorderservice.service;
 
 import com.sideproject.preorderservice.domain.EmailAuth;
+import com.sideproject.preorderservice.domain.Follow;
 import com.sideproject.preorderservice.domain.UserAccount;
 import com.sideproject.preorderservice.dto.AlarmDto;
 import com.sideproject.preorderservice.dto.UserAccountDto;
@@ -8,6 +9,7 @@ import com.sideproject.preorderservice.exception.ErrorCode;
 import com.sideproject.preorderservice.exception.PreOrderApplicationException;
 import com.sideproject.preorderservice.repository.AlarmEntityRepository;
 import com.sideproject.preorderservice.repository.EmailAuthRepository;
+import com.sideproject.preorderservice.repository.FollowRepository;
 import com.sideproject.preorderservice.repository.UserAccountRepository;
 import com.sideproject.preorderservice.util.JwtTokenUtils;
 import jakarta.transaction.Transactional;
@@ -22,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ public class UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final EmailAuthRepository emailAuthRepository;
     private final AlarmEntityRepository alarmEntityRepository;
+    private final FollowRepository followRepository;
     private final BCryptPasswordEncoder encoder;
     private final EmailService emailService;
 
@@ -104,8 +109,13 @@ public class UserAccountService {
     public Page<AlarmDto> alarmList(String email, Pageable pageable) {
         UserAccount userAccount = userAccountRepository.findByEmail(email)
                 .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("% not founded", email)));
+        List<Follow> followedUser = followRepository.findByFromUserId(userAccount.getId());
+        List<Long> followedUserIds = followedUser.stream()
+                .map(Follow::getToUser)
+                .map(UserAccount::getId)
+                .toList();
 
-        return alarmEntityRepository.findAllByUserAccount(userAccount, pageable)
+        return alarmEntityRepository.findAllByFromUserIdIn(followedUserIds, pageable)
                 .map(AlarmDto::fromEntity);
     }
 }

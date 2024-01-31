@@ -38,12 +38,12 @@ public class LikesService {
                 Likes likes = optionalLikes.get();
                 likes.toggleDeleted();
                 if (!likes.getDeleted()) {
-                    alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), AlarmType.NEW_LIKE_ON_POST, new AlarmArgs(userAccount.getId(), article.getId())));
+                    alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_LIKE_ON_POST));
                 }
                 likesRepository.save(likes);
             } else {
                 Likes newLikes = Likes.of(userAccount, likeType, targetId);
-                alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), AlarmType.NEW_LIKE_ON_POST, new AlarmArgs(userAccount.getId(), article.getId())));
+                alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_LIKE_ON_POST));
                 likesRepository.save(newLikes);
             }
         }
@@ -56,12 +56,12 @@ public class LikesService {
                 Likes likes = optionalLikes.get();
                 likes.toggleDeleted();
                 if (!likes.getDeleted()) {
-                    alarmEntityRepository.save(AlarmEntity.of(articleComment.getUserAccount(), AlarmType.NEW_LIKE_ON_COMMENT, new AlarmArgs(userAccount.getId(), articleComment.getId())));
+                    alarmEntityRepository.save(AlarmEntity.of(articleComment.getUserAccount(), userAccount.getId(), articleComment.getId(), AlarmType.NEW_LIKE_ON_COMMENT));
                 }
                 likesRepository.save(likes);
             } else {
                 Likes newLikes = Likes.of(userAccount, likeType, targetId);
-                alarmEntityRepository.save(AlarmEntity.of(articleComment.getUserAccount(), AlarmType.NEW_LIKE_ON_COMMENT, new AlarmArgs(userAccount.getId(), articleComment.getId())));
+                alarmEntityRepository.save(AlarmEntity.of(articleComment.getUserAccount(), userAccount.getId(), articleComment.getId(), AlarmType.NEW_LIKE_ON_COMMENT));
                 likesRepository.save(newLikes);
             }
         }
