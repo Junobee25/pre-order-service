@@ -42,3 +42,4 @@ spring:
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   token.expired-time-ms: ${JWT_TOKEN_EXPIRED_MS}
+  refreshToken.expired-time-ms : ${JWT_REFRESH_TOKEN_EXPIRED_MS}
