@@ -1,7 +1,6 @@
 package com.sideproject.preorderservice.service;
 
 import com.sideproject.preorderservice.configuration.AlarmType;
-import com.sideproject.preorderservice.domain.AlarmArgs;
 import com.sideproject.preorderservice.domain.Article;
 import com.sideproject.preorderservice.domain.ArticleComment;
 import com.sideproject.preorderservice.domain.UserAccount;
@@ -36,7 +35,7 @@ public class ArticleCommentService {
 
         articleCommentRepository.save(ArticleComment.of(userAccount, article, content));
 
-        alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), AlarmType.NEW_COMMENT_ON_POST, new AlarmArgs(userAccount.getId(), article.getId())));
+        alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_COMMENT_ON_POST));
     }
 
     @Transactional
