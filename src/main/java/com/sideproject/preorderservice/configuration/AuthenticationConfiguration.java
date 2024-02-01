@@ -28,13 +28,9 @@ public class AuthenticationConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/join",
-                                "/api/login",
-                                "/join/confirm-email/**",
-                                "/api/follow",
-                                "/api/posts/**",
-                                "/api/likes/**",
-                                "/api/alarm/**"
+                                "/api/**",
+                                "/join/confirm-email/**"
+
                         ).permitAll()
                 )
                 .addFilterBefore(new JwtTokenFilter(userAccountService, secretKey), UsernamePasswordAuthenticationFilter.class)
