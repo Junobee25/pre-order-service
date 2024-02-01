@@ -15,7 +15,6 @@ import com.sideproject.preorderservice.repository.*;
 import com.sideproject.preorderservice.util.JwtTokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -23,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -158,11 +158,11 @@ public class UserAccountService {
         userAccount.emailVerifiedSuccess();
     }
 
+    @Transactional(readOnly = true)
     public Page<AlarmDto> alarmList(String email, Pageable pageable) {
         UserAccount userAccount = userAccountRepository.findByEmail(email)
-                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("% not founded", email)));
-        List<Follow> followedUser = followRepository.findByFromUserId(userAccount.getId());
-        List<Long> followedUserIds = followedUser.stream()
+                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", email)));
+        List<Long> followedUserIds = followRepository.findByFromUserId(userAccount.getId()).stream()
                 .map(Follow::getToUser)
                 .map(UserAccount::getId)
                 .toList();
