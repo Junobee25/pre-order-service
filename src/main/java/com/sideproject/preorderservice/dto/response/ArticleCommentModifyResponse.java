@@ -1,25 +1,23 @@
 package com.sideproject.preorderservice.dto.response;
 
-import com.sideproject.preorderservice.dto.ArticleDto;
+import com.sideproject.preorderservice.dto.ArticleCommentDto;
 
 import java.time.LocalDateTime;
 
-public record ArticleResponse(
+public record ArticleCommentModifyResponse(
         Long id,
-        String title,
         String content,
         UserAccountResponse user,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {
-    public static ArticleResponse from(ArticleDto dto) {
-        return new ArticleResponse(
+    public static ArticleCommentModifyResponse from(ArticleCommentDto dto) {
+        return new ArticleCommentModifyResponse(
                 dto.id(),
-                dto.title(),
                 dto.content(),
                 UserAccountResponse.from(dto.userAccountDto()),
-                dto.userAccountDto().createdAt(),
-                dto.userAccountDto().modifiedAt()
+                dto.createdAt(),
+                dto.modifiedAt()
         );
     }
 }

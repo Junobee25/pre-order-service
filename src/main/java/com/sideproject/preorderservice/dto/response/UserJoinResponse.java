@@ -6,7 +6,6 @@ public record UserJoinResponse(
         Long id,
         String email
 ) {
-
     public static UserJoinResponse from(UserAccountDto userAccountDto) {
         return new UserJoinResponse(
                 userAccountDto.id(),

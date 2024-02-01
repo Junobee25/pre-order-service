@@ -16,10 +16,10 @@ public record AlarmResponse(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {
-    public static AlarmResponse fromAlarm(AlarmDto entity) {
+    public static AlarmResponse from(AlarmDto entity) {
         return new AlarmResponse(
                 entity.id(),
-                UserAccountResponse.fromUser(UserAccountDto.from(entity.userAccount())),
+                UserAccountResponse.from(UserAccountDto.from(entity.userAccount())),
                 entity.fromUserId(),
                 entity.targetId(),
                 entity.alarmType(),

@@ -15,7 +15,6 @@ public record ArticleWithCommentDto(
         Set<ArticleCommentDto> articleCommentDto,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
-
 ) {
     public static ArticleWithCommentDto from(Article article) {
         return new ArticleWithCommentDto(

@@ -1,9 +1,9 @@
 package com.sideproject.preorderservice.controller;
 
 
+import com.sideproject.preorderservice.dto.request.ArticleCommentModifyRequest;
 import com.sideproject.preorderservice.dto.request.ArticleCommentRequest;
-import com.sideproject.preorderservice.dto.request.ArticleModifyRequest;
-import com.sideproject.preorderservice.dto.response.ArticleCommentResponse;
+import com.sideproject.preorderservice.dto.response.ArticleCommentModifyResponse;
 import com.sideproject.preorderservice.dto.response.Response;
 import com.sideproject.preorderservice.service.ArticleCommentService;
 import lombok.AllArgsConstructor;
@@ -23,9 +23,9 @@ public class ArticleCommentController {
     }
 
     @PutMapping("/api/posts/comments/{commentId}")
-    public Response<ArticleCommentResponse> modify(@PathVariable Long commentId, ArticleModifyRequest request, Authentication authentication) {
+    public Response<ArticleCommentModifyResponse> modify(@PathVariable Long commentId, ArticleCommentModifyRequest request, Authentication authentication) {
         return Response.success(
-                ArticleCommentResponse.fromArticleComment(
+                ArticleCommentModifyResponse.from(
                         articleCommentService.modify(authentication.getName(), commentId, request.content())
                 )
         );

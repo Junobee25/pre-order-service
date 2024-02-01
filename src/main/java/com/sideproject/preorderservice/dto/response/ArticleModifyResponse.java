@@ -4,7 +4,7 @@ import com.sideproject.preorderservice.dto.ArticleDto;
 
 import java.time.LocalDateTime;
 
-public record ArticleResponse(
+public record ArticleModifyResponse(
         Long id,
         String title,
         String content,
@@ -12,8 +12,8 @@ public record ArticleResponse(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {
-    public static ArticleResponse from(ArticleDto dto) {
-        return new ArticleResponse(
+    public static ArticleModifyResponse from(ArticleDto dto) {
+        return new ArticleModifyResponse(
                 dto.id(),
                 dto.title(),
                 dto.content(),

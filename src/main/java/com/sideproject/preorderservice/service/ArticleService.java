@@ -51,7 +51,7 @@ public class ArticleService {
         }
         article.setTitle(title);
         article.setContent(content);
-        return ArticleDto.fromEntity(articleRepository.saveAndFlush(article));
+        return ArticleDto.from(articleRepository.saveAndFlush(article));
     }
 
     @Transactional

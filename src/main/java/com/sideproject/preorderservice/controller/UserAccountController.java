@@ -47,7 +47,7 @@ public class UserAccountController {
 
     @GetMapping("/api/alarm")
     public Response<Page<AlarmResponse>> alarm(Pageable pageable, Authentication authentication) {
-        return Response.success(userAccountService.alarmList(authentication.getName(), pageable).map(AlarmResponse::fromAlarm));
+        return Response.success(userAccountService.alarmList(authentication.getName(), pageable).map(AlarmResponse::from));
     }
 
 

@@ -11,14 +11,9 @@ public record ArticleCommentDto(
         Long articleId,
         UserAccountDto userAccountDto,
         String content,
-
         LocalDateTime createdAt,
-        LocalDateTime modifiedAt) {
-
-    public static ArticleCommentDto of(Long id, Long articleId, UserAccountDto userAccountDto, String content, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        return new ArticleCommentDto(id, articleId, userAccountDto, content, createdAt, modifiedAt);
-    }
-
+        LocalDateTime modifiedAt
+) {
     public static ArticleCommentDto from(ArticleComment entity) {
         return new ArticleCommentDto(
                 entity.getId(),
@@ -27,14 +22,6 @@ public record ArticleCommentDto(
                 entity.getContent(),
                 entity.getCreatedAt(),
                 entity.getModifiedAt()
-        );
-    }
-
-    public ArticleComment toEntity(Article article, UserAccount userAccount) {
-        return ArticleComment.of(
-                userAccount,
-                article,
-                content
         );
     }
 }

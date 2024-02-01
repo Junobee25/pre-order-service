@@ -9,13 +9,13 @@ public record ArticleCommentResponse(
         String content,
         UserAccountResponse user,
         LocalDateTime createdAt,
-        LocalDateTime modifiedAt) {
-
-    public static ArticleCommentResponse fromArticleComment(ArticleCommentDto dto) {
+        LocalDateTime modifiedAt
+) {
+    public static ArticleCommentResponse from(ArticleCommentDto dto) {
         return new ArticleCommentResponse(
                 dto.id(),
                 dto.content(),
-                UserAccountResponse.fromUser(dto.userAccountDto()),
+                UserAccountResponse.from(dto.userAccountDto()),
                 dto.createdAt(),
                 dto.modifiedAt()
         );
