@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,7 +67,7 @@ public class ArticleService {
     public Page<ArticleWithCommentDto> articleCheck(String email, Pageable pageable) {
         UserAccount userAccount = userAccountRepository.findByEmail(email)
                 .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("email is %s", email)));
-        List<Follow> followedUser = followRepository.findByFromUserId(userAccount.getId());
+        Optional<Follow> followedUser = followRepository.findByFromUserId(userAccount.getId());
         List<Long> followedUserIds = followedUser.stream()
                 .map(Follow::getToUser)
                 .map(UserAccount::getId)
