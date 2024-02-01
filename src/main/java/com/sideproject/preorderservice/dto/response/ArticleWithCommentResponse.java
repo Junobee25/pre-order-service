@@ -14,13 +14,8 @@ public record ArticleWithCommentResponse(
         LocalDateTime createdAt,
         String email,
         Set<ArticleCommentResponse> articleCommentResponse
-
 ) {
-    public static ArticleWithCommentResponse of(Long id, String title, String content, LocalDateTime createdAt, String email, Set<ArticleCommentResponse> articleCommentResponses) {
-        return new ArticleWithCommentResponse(id, title, content, createdAt, email, articleCommentResponses);
-    }
-
-    public static ArticleWithCommentResponse fromArticleWithComment(ArticleWithCommentDto dto) {
+    public static ArticleWithCommentResponse from(ArticleWithCommentDto dto) {
         return new ArticleWithCommentResponse(
                 dto.id(),
                 dto.title(),
@@ -28,7 +23,7 @@ public record ArticleWithCommentResponse(
                 dto.createdAt(),
                 dto.userAccountDto().email(),
                 dto.articleCommentDto().stream()
-                        .map(ArticleCommentResponse::fromArticleComment)
+                        .map(ArticleCommentResponse::from)
                         .collect(Collectors.toCollection(LinkedHashSet::new))
         );
     }

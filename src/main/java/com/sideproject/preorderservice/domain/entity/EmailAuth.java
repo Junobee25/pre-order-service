@@ -1,4 +1,4 @@
-package com.sideproject.preorderservice.domain;
+package com.sideproject.preorderservice.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;

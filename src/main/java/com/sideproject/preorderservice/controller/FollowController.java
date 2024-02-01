@@ -17,7 +17,6 @@ public class FollowController {
 
     @PostMapping("/api/follow")
     public Response<Void> follow(FollowRequest request, Authentication authentication) {
-        //TODO: 팔로우 서비스 로직 구현하기
         followService.follow(authentication.getName(), request.toUser());
         return Response.success(null);
     }

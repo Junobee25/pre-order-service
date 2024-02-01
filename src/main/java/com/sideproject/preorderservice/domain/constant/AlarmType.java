@@ -1,4 +1,4 @@
-package com.sideproject.preorderservice.configuration;
+package com.sideproject.preorderservice.domain.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

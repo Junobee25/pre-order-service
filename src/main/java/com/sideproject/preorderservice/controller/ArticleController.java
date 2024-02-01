@@ -2,6 +2,7 @@ package com.sideproject.preorderservice.controller;
 
 import com.sideproject.preorderservice.dto.request.ArticleModifyRequest;
 import com.sideproject.preorderservice.dto.request.ArticleWriteRequest;
+import com.sideproject.preorderservice.dto.response.ArticleModifyResponse;
 import com.sideproject.preorderservice.dto.response.ArticleResponse;
 import com.sideproject.preorderservice.dto.response.ArticleWithCommentResponse;
 import com.sideproject.preorderservice.dto.response.Response;
@@ -25,9 +26,9 @@ public class ArticleController {
     }
 
     @PutMapping("/api/posts/{articleId}")
-    public Response<ArticleResponse> modify(@PathVariable Long articleId, ArticleModifyRequest request, Authentication authentication) {
+    public Response<ArticleModifyResponse> modify(@PathVariable Long articleId, ArticleModifyRequest request, Authentication authentication) {
         return Response.success(
-                ArticleResponse.fromArticle(
+                ArticleModifyResponse.from(
                         articleService.modify(authentication.getName(), articleId, request.title(), request.content())
                 )
         );
@@ -41,6 +42,6 @@ public class ArticleController {
 
     @GetMapping("/api/posts")
     public Response<Page<ArticleWithCommentResponse>> articleCheck(Pageable pageable, Authentication authentication) {
-        return Response.success(articleService.articleCheck(authentication.getName(), pageable).map(ArticleWithCommentResponse::fromArticleWithComment));
+        return Response.success(articleService.articleCheck(authentication.getName(), pageable).map(ArticleWithCommentResponse::from));
     }
 }

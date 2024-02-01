@@ -1,6 +1,5 @@
-package com.sideproject.preorderservice.domain;
+package com.sideproject.preorderservice.domain.entity;
 
-import com.sideproject.preorderservice.dto.UserAccountDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +27,7 @@ public class UserAccount implements UserDetails {
     private Long id;
 
     @Setter
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String email;
     @Setter
     @Column(nullable = false, length = 50)
@@ -36,11 +35,10 @@ public class UserAccount implements UserDetails {
     @Setter
     @Column(nullable = false)
     private String userPassword;
-    @Setter
     @Column
     private Boolean emailVerified;
     @Setter
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String memo;
     @Setter
     @Column(nullable = false, length = 500)
@@ -69,10 +67,6 @@ public class UserAccount implements UserDetails {
     }
 
     public static UserAccount of(String email, String userName, String userPassword, Boolean emailVerified, String memo, String profilePicture) {
-        return new UserAccount(email, userName, userPassword, emailVerified, memo, profilePicture);
-    }
-
-    public static UserAccount from(String email, String userName, String userPassword, Boolean emailVerified, String memo, String profilePicture) {
         return new UserAccount(email, userName, userPassword, emailVerified, memo, profilePicture);
     }
 

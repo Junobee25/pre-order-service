@@ -1,10 +1,10 @@
 package com.sideproject.preorderservice.service;
 
-import com.sideproject.preorderservice.configuration.AlarmType;
-import com.sideproject.preorderservice.domain.Article;
-import com.sideproject.preorderservice.domain.Follow;
-import com.sideproject.preorderservice.domain.UserAccount;
-import com.sideproject.preorderservice.domain.entity.AlarmEntity;
+import com.sideproject.preorderservice.domain.constant.AlarmType;
+import com.sideproject.preorderservice.domain.entity.Alarm;
+import com.sideproject.preorderservice.domain.entity.Article;
+import com.sideproject.preorderservice.domain.entity.Follow;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 import com.sideproject.preorderservice.dto.ArticleDto;
 import com.sideproject.preorderservice.dto.ArticleWithCommentDto;
 import com.sideproject.preorderservice.exception.ErrorCode;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +39,7 @@ public class ArticleService {
         Article article = Article.of(userAccount, title, content);
         articleRepository.save(article);
 
-        alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_POST ));
+        alarmEntityRepository.save(Alarm.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_POST ));
     }
 
     @Transactional
@@ -50,7 +51,7 @@ public class ArticleService {
         }
         article.setTitle(title);
         article.setContent(content);
-        return ArticleDto.fromEntity(articleRepository.saveAndFlush(article));
+        return ArticleDto.from(articleRepository.saveAndFlush(article));
     }
 
     @Transactional
@@ -66,7 +67,7 @@ public class ArticleService {
     public Page<ArticleWithCommentDto> articleCheck(String email, Pageable pageable) {
         UserAccount userAccount = userAccountRepository.findByEmail(email)
                 .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("email is %s", email)));
-        List<Follow> followedUser = followRepository.findByFromUserId(userAccount.getId());
+        Optional<Follow> followedUser = followRepository.findByFromUserId(userAccount.getId());
         List<Long> followedUserIds = followedUser.stream()
                 .map(Follow::getToUser)
                 .map(UserAccount::getId)

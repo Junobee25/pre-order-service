@@ -1,7 +1,6 @@
 package com.sideproject.preorderservice.configuration.filter;
 
-import com.sideproject.preorderservice.domain.UserAccount;
-import com.sideproject.preorderservice.dto.UserAccountDto;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 import com.sideproject.preorderservice.service.UserAccountService;
 import com.sideproject.preorderservice.util.JwtTokenUtils;
 import jakarta.servlet.FilterChain;

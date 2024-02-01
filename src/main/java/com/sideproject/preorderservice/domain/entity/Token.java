@@ -1,6 +1,6 @@
-package com.sideproject.preorderservice.domain;
+package com.sideproject.preorderservice.domain.entity;
 
-import com.sideproject.preorderservice.configuration.TokenType;
+import com.sideproject.preorderservice.domain.constant.TokenType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

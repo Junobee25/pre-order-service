@@ -1,6 +1,6 @@
 package com.sideproject.preorderservice.repository;
 
-import com.sideproject.preorderservice.domain.EmailAuth;
+import com.sideproject.preorderservice.domain.entity.EmailAuth;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

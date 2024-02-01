@@ -1,6 +1,6 @@
 package com.sideproject.preorderservice.dto;
 
-import com.sideproject.preorderservice.domain.UserAccount;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 
 import java.time.LocalDateTime;
 
@@ -15,11 +15,6 @@ public record UserAccountDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {
-
-    public static UserAccountDto of(Long id, String email) {
-        return new UserAccountDto(id, email, null, null, null, null, null, null, null);
-    }
-
     public static UserAccountDto from(UserAccount entity) {
         return new UserAccountDto(
                 entity.getId(),

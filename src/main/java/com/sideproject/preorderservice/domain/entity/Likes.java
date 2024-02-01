@@ -1,6 +1,6 @@
-package com.sideproject.preorderservice.domain;
+package com.sideproject.preorderservice.domain.entity;
 
-import com.sideproject.preorderservice.configuration.LikeType;
+import com.sideproject.preorderservice.domain.constant.LikeType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

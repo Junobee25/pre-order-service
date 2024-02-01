@@ -20,7 +20,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class UserAccountController {
 
     private final UserAccountService userAccountService;
 
@@ -47,7 +47,7 @@ public class UserController {
 
     @GetMapping("/api/alarm")
     public Response<Page<AlarmResponse>> alarm(Pageable pageable, Authentication authentication) {
-        return Response.success(userAccountService.alarmList(authentication.getName(), pageable).map(AlarmResponse::fromAlarm));
+        return Response.success(userAccountService.alarmList(authentication.getName(), pageable).map(AlarmResponse::from));
     }
 
 
