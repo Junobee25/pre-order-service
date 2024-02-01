@@ -1,6 +1,6 @@
 package com.sideproject.preorderservice.service;
 
-import com.sideproject.preorderservice.domain.Token;
+import com.sideproject.preorderservice.domain.entity.Token;
 import com.sideproject.preorderservice.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

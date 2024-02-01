@@ -1,11 +1,11 @@
 package com.sideproject.preorderservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sideproject.preorderservice.configuration.TokenType;
-import com.sideproject.preorderservice.domain.EmailAuth;
-import com.sideproject.preorderservice.domain.Follow;
-import com.sideproject.preorderservice.domain.Token;
-import com.sideproject.preorderservice.domain.UserAccount;
+import com.sideproject.preorderservice.domain.constant.TokenType;
+import com.sideproject.preorderservice.domain.entity.EmailAuth;
+import com.sideproject.preorderservice.domain.entity.Follow;
+import com.sideproject.preorderservice.domain.entity.Token;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 import com.sideproject.preorderservice.dto.AlarmDto;
 import com.sideproject.preorderservice.dto.UserAccountDto;
 import com.sideproject.preorderservice.dto.response.UserLoginResponse;

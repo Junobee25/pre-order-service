@@ -1,8 +1,8 @@
 package com.sideproject.preorderservice.repository;
 import jakarta.persistence.EntityManager;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sideproject.preorderservice.domain.QToken;
-import com.sideproject.preorderservice.domain.Token;
+import com.sideproject.preorderservice.domain.entity.QToken;
+import com.sideproject.preorderservice.domain.entity.Token;
 
 import java.util.List;
 

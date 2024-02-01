@@ -1,6 +1,5 @@
-package com.sideproject.preorderservice.domain;
+package com.sideproject.preorderservice.domain.entity;
 
-import com.sideproject.preorderservice.dto.UserAccountDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

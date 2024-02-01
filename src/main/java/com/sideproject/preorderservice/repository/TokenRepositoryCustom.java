@@ -1,6 +1,6 @@
 package com.sideproject.preorderservice.repository;
 
-import com.sideproject.preorderservice.domain.Token;
+import com.sideproject.preorderservice.domain.entity.Token;
 
 import java.util.List;
 

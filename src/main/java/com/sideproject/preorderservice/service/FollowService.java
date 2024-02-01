@@ -1,9 +1,9 @@
 package com.sideproject.preorderservice.service;
 
-import com.sideproject.preorderservice.configuration.AlarmType;
-import com.sideproject.preorderservice.domain.Follow;
-import com.sideproject.preorderservice.domain.UserAccount;
-import com.sideproject.preorderservice.domain.entity.AlarmEntity;
+import com.sideproject.preorderservice.domain.constant.AlarmType;
+import com.sideproject.preorderservice.domain.entity.Alarm;
+import com.sideproject.preorderservice.domain.entity.Follow;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 import com.sideproject.preorderservice.exception.ErrorCode;
 import com.sideproject.preorderservice.exception.PreOrderApplicationException;
 import com.sideproject.preorderservice.repository.AlarmEntityRepository;
@@ -32,7 +32,7 @@ public class FollowService {
         if (existingFollow.isPresent()) {
             followRepository.delete(existingFollow.get());
         } else {
-            alarmEntityRepository.save(AlarmEntity.of(toUserAccount, fromUserAccount.getId(), toUserAccount.getId(), AlarmType.NEW_FOLLOW_TO_USER));
+            alarmEntityRepository.save(Alarm.of(toUserAccount, fromUserAccount.getId(), toUserAccount.getId(), AlarmType.NEW_FOLLOW_TO_USER));
             followRepository.save(Follow.of(fromUserAccount, toUserAccount));
         }
     }

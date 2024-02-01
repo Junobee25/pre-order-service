@@ -1,10 +1,10 @@
 package com.sideproject.preorderservice.service;
 
-import com.sideproject.preorderservice.configuration.AlarmType;
-import com.sideproject.preorderservice.domain.Article;
-import com.sideproject.preorderservice.domain.Follow;
-import com.sideproject.preorderservice.domain.UserAccount;
-import com.sideproject.preorderservice.domain.entity.AlarmEntity;
+import com.sideproject.preorderservice.domain.constant.AlarmType;
+import com.sideproject.preorderservice.domain.entity.Alarm;
+import com.sideproject.preorderservice.domain.entity.Article;
+import com.sideproject.preorderservice.domain.entity.Follow;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 import com.sideproject.preorderservice.dto.ArticleDto;
 import com.sideproject.preorderservice.dto.ArticleWithCommentDto;
 import com.sideproject.preorderservice.exception.ErrorCode;
@@ -39,7 +39,7 @@ public class ArticleService {
         Article article = Article.of(userAccount, title, content);
         articleRepository.save(article);
 
-        alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_POST ));
+        alarmEntityRepository.save(Alarm.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_POST ));
     }
 
     @Transactional

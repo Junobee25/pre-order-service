@@ -1,9 +1,8 @@
 package com.sideproject.preorderservice.service;
 
-import com.sideproject.preorderservice.configuration.AlarmType;
-import com.sideproject.preorderservice.configuration.LikeType;
-import com.sideproject.preorderservice.domain.*;
-import com.sideproject.preorderservice.domain.entity.AlarmEntity;
+import com.sideproject.preorderservice.domain.constant.AlarmType;
+import com.sideproject.preorderservice.domain.constant.LikeType;
+import com.sideproject.preorderservice.domain.entity.*;
 import com.sideproject.preorderservice.exception.ErrorCode;
 import com.sideproject.preorderservice.exception.PreOrderApplicationException;
 import com.sideproject.preorderservice.repository.*;
@@ -38,12 +37,12 @@ public class LikesService {
                 Likes likes = optionalLikes.get();
                 likes.toggleDeleted();
                 if (!likes.getDeleted()) {
-                    alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_LIKE_ON_POST));
+                    alarmEntityRepository.save(Alarm.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_LIKE_ON_POST));
                 }
                 likesRepository.save(likes);
             } else {
                 Likes newLikes = Likes.of(userAccount, likeType, targetId);
-                alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_LIKE_ON_POST));
+                alarmEntityRepository.save(Alarm.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_LIKE_ON_POST));
                 likesRepository.save(newLikes);
             }
         }
@@ -56,12 +55,12 @@ public class LikesService {
                 Likes likes = optionalLikes.get();
                 likes.toggleDeleted();
                 if (!likes.getDeleted()) {
-                    alarmEntityRepository.save(AlarmEntity.of(articleComment.getUserAccount(), userAccount.getId(), articleComment.getId(), AlarmType.NEW_LIKE_ON_COMMENT));
+                    alarmEntityRepository.save(Alarm.of(articleComment.getUserAccount(), userAccount.getId(), articleComment.getId(), AlarmType.NEW_LIKE_ON_COMMENT));
                 }
                 likesRepository.save(likes);
             } else {
                 Likes newLikes = Likes.of(userAccount, likeType, targetId);
-                alarmEntityRepository.save(AlarmEntity.of(articleComment.getUserAccount(), userAccount.getId(), articleComment.getId(), AlarmType.NEW_LIKE_ON_COMMENT));
+                alarmEntityRepository.save(Alarm.of(articleComment.getUserAccount(), userAccount.getId(), articleComment.getId(), AlarmType.NEW_LIKE_ON_COMMENT));
                 likesRepository.save(newLikes);
             }
         }

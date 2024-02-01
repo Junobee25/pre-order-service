@@ -1,6 +1,6 @@
 package com.sideproject.preorderservice.dto;
 
-import com.sideproject.preorderservice.domain.Article;
+import com.sideproject.preorderservice.domain.entity.Article;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;

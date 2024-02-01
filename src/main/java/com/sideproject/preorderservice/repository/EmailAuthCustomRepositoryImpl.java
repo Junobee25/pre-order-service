@@ -1,8 +1,8 @@
 package com.sideproject.preorderservice.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sideproject.preorderservice.domain.EmailAuth;
-import com.sideproject.preorderservice.domain.QEmailAuth;
+import com.sideproject.preorderservice.domain.entity.EmailAuth;
+import com.sideproject.preorderservice.domain.entity.QEmailAuth;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDateTime;

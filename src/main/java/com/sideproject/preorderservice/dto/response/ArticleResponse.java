@@ -1,6 +1,5 @@
 package com.sideproject.preorderservice.dto.response;
 
-import com.sideproject.preorderservice.domain.Article;
 import com.sideproject.preorderservice.dto.ArticleDto;
 
 import java.time.LocalDateTime;

@@ -1,8 +1,8 @@
 package com.sideproject.preorderservice.dto;
 
-import com.sideproject.preorderservice.configuration.AlarmType;
-import com.sideproject.preorderservice.domain.UserAccount;
-import com.sideproject.preorderservice.domain.entity.AlarmEntity;
+import com.sideproject.preorderservice.domain.constant.AlarmType;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
+import com.sideproject.preorderservice.domain.entity.Alarm;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +16,7 @@ public record AlarmDto(
         LocalDateTime modifiedAt
 ) {
 
-    public static AlarmDto fromEntity(AlarmEntity entity) {
+    public static AlarmDto fromEntity(Alarm entity) {
         return new AlarmDto(
                 entity.getId(),
                 entity.getUserAccount(),

@@ -1,6 +1,6 @@
 package com.sideproject.preorderservice.util;
 
-import com.sideproject.preorderservice.domain.UserAccount;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

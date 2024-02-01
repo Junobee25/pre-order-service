@@ -1,6 +1,6 @@
 package com.sideproject.preorderservice.controller;
 
-import com.sideproject.preorderservice.configuration.LikeType;
+import com.sideproject.preorderservice.domain.constant.LikeType;
 import com.sideproject.preorderservice.dto.response.Response;
 import com.sideproject.preorderservice.service.LikesService;
 import lombok.RequiredArgsConstructor;

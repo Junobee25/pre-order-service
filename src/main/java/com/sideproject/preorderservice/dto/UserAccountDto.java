@@ -1,6 +1,6 @@
 package com.sideproject.preorderservice.dto;
 
-import com.sideproject.preorderservice.domain.UserAccount;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 
 import java.time.LocalDateTime;
 

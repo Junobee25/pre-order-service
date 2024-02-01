@@ -1,8 +1,8 @@
 package com.sideproject.preorderservice.dto;
 
-import com.sideproject.preorderservice.domain.Article;
-import com.sideproject.preorderservice.domain.ArticleComment;
-import com.sideproject.preorderservice.domain.UserAccount;
+import com.sideproject.preorderservice.domain.entity.Article;
+import com.sideproject.preorderservice.domain.entity.ArticleComment;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 
 import java.time.LocalDateTime;
 

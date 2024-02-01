@@ -20,7 +20,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class UserAccountController {
 
     private final UserAccountService userAccountService;
 

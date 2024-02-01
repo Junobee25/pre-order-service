@@ -1,10 +1,10 @@
 package com.sideproject.preorderservice.service;
 
-import com.sideproject.preorderservice.configuration.AlarmType;
-import com.sideproject.preorderservice.domain.Article;
-import com.sideproject.preorderservice.domain.ArticleComment;
-import com.sideproject.preorderservice.domain.UserAccount;
-import com.sideproject.preorderservice.domain.entity.AlarmEntity;
+import com.sideproject.preorderservice.domain.constant.AlarmType;
+import com.sideproject.preorderservice.domain.entity.Alarm;
+import com.sideproject.preorderservice.domain.entity.Article;
+import com.sideproject.preorderservice.domain.entity.ArticleComment;
+import com.sideproject.preorderservice.domain.entity.UserAccount;
 import com.sideproject.preorderservice.dto.ArticleCommentDto;
 import com.sideproject.preorderservice.exception.ErrorCode;
 import com.sideproject.preorderservice.exception.PreOrderApplicationException;
@@ -35,7 +35,7 @@ public class ArticleCommentService {
 
         articleCommentRepository.save(ArticleComment.of(userAccount, article, content));
 
-        alarmEntityRepository.save(AlarmEntity.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_COMMENT_ON_POST));
+        alarmEntityRepository.save(Alarm.of(article.getUserAccount(), userAccount.getId(), article.getId(), AlarmType.NEW_COMMENT_ON_POST));
     }
 
     @Transactional

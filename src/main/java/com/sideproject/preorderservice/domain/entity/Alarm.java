@@ -1,9 +1,7 @@
 package com.sideproject.preorderservice.domain.entity;
 
 
-import com.sideproject.preorderservice.configuration.AlarmType;
-import com.sideproject.preorderservice.domain.AuditingFields;
-import com.sideproject.preorderservice.domain.UserAccount;
+import com.sideproject.preorderservice.domain.constant.AlarmType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +10,7 @@ import lombok.Setter;
 @Table(name = "\"alarm\"")
 @Getter
 @Setter
-public class AlarmEntity extends AuditingFields {
+public class Alarm extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +28,8 @@ public class AlarmEntity extends AuditingFields {
     @Enumerated(EnumType.STRING)
     private AlarmType alarmType;
 
-    public static AlarmEntity of(UserAccount userAccount, Long fromUserId, Long targetId, AlarmType alarmType) {
-        AlarmEntity entity = new AlarmEntity();
+    public static Alarm of(UserAccount userAccount, Long fromUserId, Long targetId, AlarmType alarmType) {
+        Alarm entity = new Alarm();
         entity.setUserAccount(userAccount);
         entity.setFromUserId(fromUserId);
         entity.setTargetId(targetId);

@@ -1,6 +1,6 @@
 package com.sideproject.preorderservice.dto.response;
 
-import com.sideproject.preorderservice.configuration.AlarmType;
+import com.sideproject.preorderservice.domain.constant.AlarmType;
 import com.sideproject.preorderservice.dto.AlarmDto;
 import com.sideproject.preorderservice.dto.UserAccountDto;
 
