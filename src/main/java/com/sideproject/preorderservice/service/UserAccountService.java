@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -88,7 +89,7 @@ public class UserAccountService {
 
     public UserLoginResponse login(String email, String password) {
         UserAccount userAccount = userAccountRepository.findByEmail(email)
-                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("% not founded", email)));
+                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", email)));
 
         if (!encoder.matches(password, userAccount.getUserPassword())) {
             throw new PreOrderApplicationException(ErrorCode.INVALID_PASSWORD);
@@ -96,6 +97,36 @@ public class UserAccountService {
         if (!userAccount.getEmailVerified()) {
             throw new PreOrderApplicationException(ErrorCode.USER_NOT_AUTHENTICATED);
         }
+
+        String accessToken = JwtTokenUtils.generateToken(email, secretKey, expiredTimeMs);
+        String refreshToken = JwtTokenUtils.generateRefreshToken(email, secretKey, expiredRefreshTokenTimeMs);
+        revokeAllUserTokens(email);
+        saveToken(email, accessToken);
+        return new UserLoginResponse(accessToken, refreshToken);
+    }
+
+    @Transactional
+    public void modifyProfile(String email, String userName, String memo, String profilePicture) {
+        UserAccount userAccount = userAccountRepository.findByEmail(email)
+                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", email)));
+
+        userAccount.setUserName(userName);
+        userAccount.setMemo(memo);
+        userAccount.setProfilePicture(profilePicture);
+        userAccountRepository.save(userAccount);
+    }
+
+    @Transactional
+    public UserLoginResponse modifyPassword(String email, String currentPassword, String newPassword) {
+        UserAccount userAccount = userAccountRepository.findByEmail(email)
+                .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", email)));
+
+        if (!encoder.matches(currentPassword, userAccount.getUserPassword())) {
+            throw new PreOrderApplicationException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        userAccount.setUserPassword(encoder.encode(newPassword));
+        userAccountRepository.save(userAccount);
 
         String accessToken = JwtTokenUtils.generateToken(email, secretKey, expiredTimeMs);
         String refreshToken = JwtTokenUtils.generateRefreshToken(email, secretKey, expiredRefreshTokenTimeMs);

@@ -17,6 +17,7 @@ public enum ErrorCode {
     INVALID_PERMISSION(HttpStatus.UNAUTHORIZED, "User has invalid permission"),
     INVALID_LIKE_REQUEST(HttpStatus.NOT_FOUND, "Invalid like request");
 
+
     private final HttpStatus status;
     private final String message;
 }

@@ -3,6 +3,7 @@ package com.sideproject.preorderservice.controller;
 import com.sideproject.preorderservice.dto.request.EmailAuthRequest;
 import com.sideproject.preorderservice.dto.request.UserJoinRequest;
 import com.sideproject.preorderservice.dto.request.UserLoginRequest;
+import com.sideproject.preorderservice.dto.request.UserProfileModifyRequest;
 import com.sideproject.preorderservice.dto.response.*;
 import com.sideproject.preorderservice.service.UserAccountService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -57,4 +55,14 @@ public class UserAccountController {
         userAccountService.refreshToken(request, response);
     }
 
+    @PutMapping("/api/modify-profile")
+    public void modifyProfile(UserProfileModifyRequest request, Authentication authentication) {
+        //TODO: 프로필 변경시 프로필 사진은 일단 String 으로 대체한다. 후에 변경
+        userAccountService.modifyProfile(authentication.getName(), request.userName(), request.memo(), request.profilePicture());
+    }
+
+    @PutMapping("/api/modify-password")
+    public Response<UserLoginResponse> modifyPassword(String currentPassword, String newPassword, Authentication authentication) {
+        return Response.success(userAccountService.modifyPassword(authentication.getName(), currentPassword, newPassword));
+    }
 }
