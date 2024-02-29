@@ -1,8 +1,7 @@
-# 예약 구매 서비스
+# 소셜 미디어 플랫폼 API
 
 [![GitKraken shield](https://img.shields.io/badge/GitKraken-Legendary%20Git%20Tools-teal?style=plastic&logo=gitkraken)](https://gitkraken.link/Junobee25)  
 
-대용량 트래픽에 대응할 수 있도록 설계된 예약 구매 서비스입니다.   
 팔로우 관계, 좋아요, 게시판, 알림 기능 등 소셜 미디어 플랫폼에 사용되는 기본적인 API들을 경험할 수 있도록 만들어졌습니다.
 
 ## 개발 환경
@@ -15,12 +14,3 @@
 
 ## 사용 기술
 * Spring Security, JWT, JPA, QueryDsl, Google SMTP Server
-
-## 아키텍처
-* 현재 : Monolithic, MVC
-* 진행중 : MultiMonolithic
-* 진행중 : MSA
-
-
-## 도커 컴포즈 명령어
-* `docker-compose up -d`
