@@ -8,18 +8,14 @@ public record ArticleModifyResponse(
         Long id,
         String title,
         String content,
-        UserAccountResponse user,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt
+        UserAccountResponse user
 ) {
     public static ArticleModifyResponse from(ArticleDto dto) {
         return new ArticleModifyResponse(
                 dto.id(),
                 dto.title(),
                 dto.content(),
-                UserAccountResponse.from(dto.userAccountDto()),
-                dto.userAccountDto().createdAt(),
-                dto.userAccountDto().modifiedAt()
+                UserAccountResponse.from(dto.userAccountDto())
         );
     }
 }

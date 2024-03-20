@@ -40,44 +40,25 @@ public class UserAccount implements UserDetails {
     @Setter
     @Column(nullable = false, length = 500)
     private String memo;
-    @Setter
-    @Column(nullable = false, length = 500)
-    private String profilePicture;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime modifiedAt;
 
     protected UserAccount() {
 
     }
 
-    private UserAccount(String email, String userName, String userPassword, Boolean emailVerified, String memo, String profilePicture) {
+    private UserAccount(String email, String userName, String userPassword, Boolean emailVerified, String memo) {
         this.email = email;
         this.userName = userName;
         this.userPassword = userPassword;
         this.emailVerified = emailVerified;
         this.memo = memo;
-        this.profilePicture = profilePicture;
     }
 
-    public static UserAccount of(String email, String userName, String userPassword, Boolean emailVerified, String memo, String profilePicture) {
-        return new UserAccount(email, userName, userPassword, emailVerified, memo, profilePicture);
+    public static UserAccount of(String email, String userName, String userPassword, Boolean emailVerified, String memo) {
+        return new UserAccount(email, userName, userPassword, emailVerified, memo);
     }
 
     public void emailVerifiedSuccess() {
         this.emailVerified = true;
-    }
-
-    @PrePersist
-    public void setCreationTimestamp() {
-        this.createdAt = LocalDateTime.now();
-        this.modifiedAt = LocalDateTime.now();
     }
 
     @Override

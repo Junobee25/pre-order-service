@@ -10,11 +10,12 @@ public record UserAccountDto(
         String userName,
         String userPassword,
         Boolean emailVerified,
-        String memo,
-        String profilePicture,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt
+        String memo
+
 ) {
+    public static UserAccountDto of(Long id, String email, String userName, String password, Boolean emailVerified, String memo) {
+        return new UserAccountDto(id, email, userName, password, emailVerified, memo);
+    }
     public static UserAccountDto from(UserAccount entity) {
         return new UserAccountDto(
                 entity.getId(),
@@ -22,10 +23,7 @@ public record UserAccountDto(
                 entity.getUsername(),
                 entity.getUserPassword(),
                 entity.getEmailVerified(),
-                entity.getMemo(),
-                entity.getProfilePicture(),
-                entity.getCreatedAt(),
-                entity.getModifiedAt()
+                entity.getMemo()
         );
     }
 }

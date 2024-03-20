@@ -8,9 +8,10 @@ public record UserJoinRequest(
         String email,
         String userName,
         String password,
-        String memo,
-        MultipartFile profilePicture,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt
+        String memo
 ) {
+
+    public static UserJoinRequest of(String email, String userName, String password, String memo) {
+        return new UserJoinRequest(email, userName, password, memo);
+    }
 }

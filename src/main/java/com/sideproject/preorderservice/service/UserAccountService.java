@@ -23,13 +23,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -58,7 +55,7 @@ public class UserAccountService {
         );
     }
 
-    public UserAccountDto join(String email, String userName, String userPassword, String memo, MultipartFile profilePicture) {
+    public UserAccountDto join(String email, String userName, String userPassword, String memo) {
         //TODO: 생성자에 값을 즉시 주입시켜 생성할 수 있는 Build 패턴이 유용한 것 같다 회원가입은 dto를 통해 값을 전달 했는데 Build 패턴으로 리팩토링해보자
         EmailAuth emailAuth = emailAuthRepository.save(
                 EmailAuth.builder()
@@ -71,18 +68,7 @@ public class UserAccountService {
             throw new PreOrderApplicationException(ErrorCode.DUPLICATED_USER_NAME, String.format("%s is duplicated", email));
         });
 
-        String profilePictureBase64 = null;
-        if (profilePicture != null && !profilePicture.isEmpty()) {
-            try {
-                byte[] bytes = profilePicture.getBytes();
-                profilePictureBase64 = Base64.getEncoder().encodeToString(bytes);
-            } catch (IOException e) {
-                //TODO: Logger
-                e.printStackTrace();
-            }
-        }
-        profilePictureBase64 = "/temp/img";
-        UserAccount savedUser = userAccountRepository.save(UserAccount.of(email, userName, encoder.encode(userPassword), false, memo, profilePictureBase64));
+        UserAccount savedUser = userAccountRepository.save(UserAccount.of(email, userName, encoder.encode(userPassword), false, memo));
         emailService.send(emailAuth.getEmail(), emailAuth.getAuthToken());
         return UserAccountDto.from(savedUser);
     }
@@ -106,13 +92,12 @@ public class UserAccountService {
     }
 
     @Transactional
-    public void modifyProfile(String email, String userName, String memo, String profilePicture) {
+    public void modifyProfile(String email, String userName, String memo) {
         UserAccount userAccount = userAccountRepository.findByEmail(email)
                 .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", email)));
 
         userAccount.setUserName(userName);
         userAccount.setMemo(memo);
-        userAccount.setProfilePicture(profilePicture);
         userAccountRepository.save(userAccount);
     }
 

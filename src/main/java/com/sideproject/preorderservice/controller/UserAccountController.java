@@ -23,13 +23,12 @@ public class UserAccountController {
     private final UserAccountService userAccountService;
 
     @PostMapping("/api/join")
-    public Response<UserJoinResponse> join(UserJoinRequest request) {
-        return Response.success(UserJoinResponse.from(userAccountService.join(
+    public UserJoinResponse join(UserJoinRequest request) {
+        return UserJoinResponse.from(userAccountService.join(
                 request.email(),
                 request.userName(),
                 request.password(),
-                request.memo(),
-                request.profilePicture())));
+                request.memo()));
     }
 
     @GetMapping("/join/confirm-email")
@@ -58,7 +57,7 @@ public class UserAccountController {
     @PutMapping("/api/modify-profile")
     public void modifyProfile(UserProfileModifyRequest request, Authentication authentication) {
         //TODO: 프로필 변경시 프로필 사진은 일단 String 으로 대체한다. 후에 변경
-        userAccountService.modifyProfile(authentication.getName(), request.userName(), request.memo(), request.profilePicture());
+        userAccountService.modifyProfile(authentication.getName(), request.userName(), request.memo());
     }
 
     @PutMapping("/api/modify-password")
