@@ -2,6 +2,7 @@ package com.sideproject.preorderservice.controller;
 
 import com.sideproject.preorderservice.dto.UserAccountDto;
 import com.sideproject.preorderservice.dto.request.UserJoinRequest;
+import com.sideproject.preorderservice.dto.response.UserLoginResponse;
 import com.sideproject.preorderservice.service.UserAccountService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ class UserAccountControllerTest {
 
     }
 
-    @DisplayName("[POST] 유효한 이메일 인증 - 정상 호출")
+    @DisplayName("[GET] 유효한 이메일 인증 - 정상 호출")
     @Test
     void confirmEmail() throws Exception {
         willDoNothing().given(userAccountService).confirmEmail("test","test");
@@ -53,6 +54,17 @@ class UserAccountControllerTest {
         mvc.perform(get("/join/confirm-email").with(csrf()))
                 .andExpect(status().isOk());
 
+    }
+
+    @DisplayName("[POST] 로그인 - 정상 호출")
+    @Test
+    void login() throws Exception {
+        UserLoginResponse userLoginResponse = new UserLoginResponse("test", "test");
+        given(userAccountService.login(any(),any()))
+                .willReturn(userLoginResponse);
+
+        mvc.perform(post("/api/login").with(csrf()))
+                .andExpect(status().isOk());
     }
 
 }
