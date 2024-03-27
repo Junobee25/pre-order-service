@@ -23,12 +23,12 @@ public class UserAccountController {
     private final UserAccountService userAccountService;
 
     @PostMapping("/api/join")
-    public UserJoinResponse join(UserJoinRequest request) {
-        return UserJoinResponse.from(userAccountService.join(
+    public Response<UserJoinResponse> join(UserJoinRequest request) {
+        return Response.success(UserJoinResponse.from(userAccountService.join(
                 request.email(),
                 request.userName(),
                 request.password(),
-                request.memo()));
+                request.memo())));
     }
 
     @GetMapping("/join/confirm-email")
