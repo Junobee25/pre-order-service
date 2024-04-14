@@ -18,10 +18,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserAccountServiceTest {
@@ -50,7 +51,7 @@ class UserAccountServiceTest {
         ReflectionTestUtils.setField(sut, "expiredRefreshTokenTimeMs", 1L);
     }
 
-    @DisplayName("[POST] 회원 정보를 입력하면, 새로운 회원 정보를 저장하여 가입시키고 해당 회원 데이터를 리턴한다.")
+    @DisplayName("회원 정보를 입력하면, 새로운 회원 정보를 저장하여 가입시키고 해당 회원 데이터를 리턴한다.")
     @Test
     void join() {
         // given
@@ -65,7 +66,6 @@ class UserAccountServiceTest {
                 userAccount.getPassword(),
                 userAccount.getMemo()
         );
-
         //then
         assertThat(result)
                 .hasFieldOrPropertyWithValue("email", userAccount.getEmail())
@@ -75,7 +75,24 @@ class UserAccountServiceTest {
         then(userAccountRepository).should().save(userAccount);
     }
 
-    @DisplayName("[POST] 로그인 정상 동작")
+    @DisplayName("회원 정보 수정 정상 동작")
+    @Test
+    void modifyProfile() {
+        UserAccount userAccount = createUserAccount();
+
+
+        when(userAccountRepository.findByEmail(userAccount.getEmail())).thenReturn(Optional.of(userAccount));
+        sut.modifyProfile("test@email.com", "test1", "memo");
+
+        verify(userAccountRepository, times(1)).findByEmail("test@email.com");
+        verify(userAccountRepository, times(1)).save(userAccount);
+
+        assertEquals("test1", userAccount.getName());
+        assertEquals("memo", userAccount.getMemo());
+
+    }
+
+    @DisplayName("로그인 정상 동작")
     @Test
     void login() {
         //given
@@ -91,12 +108,12 @@ class UserAccountServiceTest {
 
 
     private EmailAuth createEmailAuth() {
-        return EmailAuth.of("test", "test", false);
+        return EmailAuth.of("test@email.com", "test", false);
     }
 
     private UserAccount createUserAccount() {
         return UserAccount.of(
-                "test",
+                "test@email.com",
                 "test",
                 "password_encrypt",
                 true,
