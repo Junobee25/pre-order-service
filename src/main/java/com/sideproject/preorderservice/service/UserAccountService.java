@@ -96,7 +96,7 @@ public class UserAccountService {
         UserAccount userAccount = userAccountRepository.findByEmail(email)
                 .orElseThrow(() -> new PreOrderApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", email)));
 
-        userAccount.setUserName(userName);
+        userAccount.setName(userName);
         userAccount.setMemo(memo);
         userAccountRepository.save(userAccount);
     }

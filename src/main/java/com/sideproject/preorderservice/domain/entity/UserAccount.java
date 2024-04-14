@@ -33,7 +33,7 @@ public class UserAccount implements UserDetails {
     private String email;
     @Setter
     @Column(nullable = false, length = 50)
-    private String userName;
+    private String name;
     @Setter
     @Column(nullable = false)
     private String userPassword;
@@ -47,16 +47,16 @@ public class UserAccount implements UserDetails {
 
     }
 
-    private UserAccount(String email, String userName, String userPassword, Boolean emailVerified, String memo) {
+    private UserAccount(String email, String name, String userPassword, Boolean emailVerified, String memo) {
         this.email = email;
-        this.userName = userName;
+        this.name = name;
         this.userPassword = userPassword;
         this.emailVerified = emailVerified;
         this.memo = memo;
     }
 
-    public static UserAccount of(String email, String userName, String userPassword, Boolean emailVerified, String memo) {
-        return new UserAccount(email, userName, userPassword, emailVerified, memo);
+    public static UserAccount of(String email, String name, String userPassword, Boolean emailVerified, String memo) {
+        return new UserAccount(email, name, userPassword, emailVerified, memo);
     }
 
     public void emailVerifiedSuccess() {
